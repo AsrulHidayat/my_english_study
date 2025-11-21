@@ -46,33 +46,30 @@
 
         <section id="dashboard-screen" class="screen">
             <div class="glass-panel dashboard-panel">
+                
                 <header class="dash-header">
-                    <div class="profile-section">
-                        <div class="avatar-circle" id="display-avatar">🧑‍🚀</div>
-                        <div class="user-details">
-                            <h3 id="display-username">Player</h3>
-                            <span class="badge">Rank: Cyber Cadet</span>
+                    <div class="avatar-circle" id="display-avatar">🧑‍🚀</div>
+                    <div class="user-details">
+                        <h3 id="display-username">Player</h3>
+                        <span class="badge">Rank: Cyber Cadet</span>
+                        <div class="score-card">
+                            HIGHSCORE <span class="value" id="display-highscore">0</span>
                         </div>
-                    </div>
-                    <div class="score-card">
-                        <span class="label">HIGHSCORE</span>
-                        <span class="value" id="display-highscore">0</span>
                     </div>
                 </header>
 
                 <div class="menu-buttons">
-                    <button onclick="startStoryMode()" class="btn-push btn-accent big-btn">
-                        <span class="icon">⚔️</span> PLAY STORY
+                    <button onclick="startStoryMode()" class="btn-menu btn-play">
+                        ⚔️ PLAY STORY
                     </button>
-                    <div class="row-btns">
-                        <button onclick="showLeaderboard()" class="btn-push btn-secondary">
-                            🏆 RANK
-                        </button>
-                        <button onclick="logout()" class="btn-push btn-danger">
-                            🚪 EXIT
-                        </button>
-                    </div>
+                    <button onclick="showLeaderboard()" class="btn-menu btn-rank">
+                        🏆 RANK
+                    </button>
+                    <button onclick="logout()" class="btn-menu btn-exit">
+                        🚪 EXIT
+                    </button>
                 </div>
+
             </div>
         </section>
 
@@ -110,7 +107,7 @@
 
         <section id="leaderboard-screen" class="screen">
             <div class="glass-panel center-panel">
-                <h2 style="color: var(--primary); text-shadow: 0 0 10px var(--primary); margin-bottom: 20px;">HALL OF FAME</h2>
+                <h2>HALL OF FAME</h2>
                 <ul id="leaderboard-list" class="scrollable-list"></ul>
                 <button onclick="showDashboard()" class="btn-push btn-secondary">BACK TO BASE</button>
             </div>
