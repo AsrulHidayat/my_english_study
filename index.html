@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Space Vocab: Neon Edition</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/main.css">       <link rel="stylesheet" href="css/login.css">      <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" href="css/editor.css">
 </head>
+
 <body>
 
-    <div class="area"><ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul></div>
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
     <canvas id="confetti-canvas"></canvas>
 
     <div id="app-container">
-        
+
         <section id="login-screen" class="screen active">
             <div class="glass-panel center-panel">
                 <div class="logo-area">
@@ -51,7 +71,7 @@
                     </div>
                 </header>
                 <div class="menu-buttons">
-                    <button onclick="startStoryMode()" class="btn-menu btn-play">⚔️ PLAY STORY</button>
+                    <button onclick="showLevelSelect()" class="btn-menu btn-play">⚔️ PLAY STORY</button>
                     <button onclick="showLeaderboard()" class="btn-menu btn-rank">🏆 RANK</button>
                     <button onclick="logout()" class="btn-menu btn-exit">🚪 EXIT</button>
                 </div>
@@ -61,9 +81,13 @@
         <section id="game-screen" class="screen">
             <div class="glass-panel game-panel">
                 <div class="game-top-bar">
-                    <button onclick="quitGame()" class="btn-icon" style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">🏳️</button>
+                    <button onclick="quitGame()" class="btn-icon"
+                        style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">🏳️</button>
                     <div class="score-pill">💎 <span id="current-score">0</span></div>
-                    <div class="hp-wrapper">❤️ <div class="hp-track"><div id="hp-fill"></div></div></div>
+                    <div class="hp-wrapper">❤️ <div class="hp-track">
+                            <div id="hp-fill"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="battle-stage">
                     <div class="enemy-floater">
@@ -91,6 +115,55 @@
             </div>
         </section>
 
+        <section id="level-screen" class="screen">
+            <div class="glass-panel center-panel">
+                <h2 style="color:var(--primary); margin-bottom:20px; text-shadow:0 0 10px var(--primary);">MISSION LOG
+                </h2>
+
+                <div id="level-list" class="scrollable-list" style="max-height: 300px; width:100%;"></div>
+
+                <div style="margin-top: 20px; width: 100%;">
+                    <button onclick="openEditor()" class="btn-push btn-action">➕ NEW MISSION</button>
+                    <button onclick="showDashboard()" class="btn-push btn-secondary">BACK</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="editor-screen" class="screen">
+            <div class="glass-panel center-panel"
+                style="justify-content: flex-start; padding-top: 30px; min-height: auto;">
+
+                <h2 style="color:var(--secondary); margin-bottom:5px; text-shadow: 0 0 10px var(--secondary);">CREATE
+                    MISSION</h2>
+                <p id="day-label" style="color:#fff; margin-bottom:15px; font-weight:bold;">Day ...</p>
+
+                <div style="width: 100%; text-align: left;">
+                    <label class="input-label">PASTE WORDS HERE:</label>
+                    <textarea id="input-bulk" class="neon-textarea" placeholder="Example:
+                            Run - Lari
+                            Walk - Jalan
+                            Eat - Makan">
+                    </textarea>
+                </div>
+
+                <button onclick="processBulkInput()" class="btn-push btn-action"
+                    style="margin-top: 15px; margin-bottom: 15px;">
+                    ⬇️ PROCESS & ADD
+                </button>
+
+                <div style="width:100%; text-align:left;">
+                    <label class="input-label">PREVIEW:</label>
+                    <ul id="preview-list" class="scrollable-list" style="height: 120px; margin-bottom: 15px;">
+                    </ul>
+                </div>
+
+                <div style="display:flex; gap:10px; width:100%; margin-top: 0;">
+                    <button onclick="saveLevel()" class="btn-push btn-primary">💾 SAVE</button>
+                    <button onclick="showLevelSelect()" class="btn-push btn-danger">CANCEL</button>
+                </div>
+            </div>
+        </section>
+
     </div>
 
     <audio id="sfx-win" src="assets/true.mp3"></audio>
@@ -98,9 +171,12 @@
 
     <script src="js/core.js"></script>
     <script src="js/login.js"></script>
+
     <script src="js/dashboard.js"></script>
     <script src="js/game.js"></script>
     <script src="js/leaderboard.js"></script>
+    <script src="js/editor.js"></script>
 
 </body>
+
 </html>

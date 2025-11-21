@@ -194,7 +194,14 @@ body {
     margin-bottom: 15px;
     color: #000;
     font-weight: 900;
-    overflow: hidden;
+    overflow: hidden; 
+    min-height: 60px;           /* Tinggi tombol minimal 60px (Sama rata) */
+    display: flex;              /* Mode Flexbox */
+    align-items: center;        /* Teks rata tengah Vertikal */
+    justify-content: center;    /* Teks rata tengah Horizontal */
+    gap: 10px;                  /* Jarak ikon dan teks */
+    line-height: 1;             /* Baris teks rapat */
+    
 }
 
 .btn-push::after {

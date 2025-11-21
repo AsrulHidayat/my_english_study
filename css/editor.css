@@ -1,0 +1,126 @@
+/* css/editor.css */
+
+/* --- FORM INPUT AREA --- */
+
+/* Label di atas input (agar instruksi jelas) */
+.input-label {
+    display: block;
+    text-align: left;
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Kotak Input Massal (Textarea) yang Baru & Lebih Baik */
+.neon-textarea {
+    width: 100%;
+    height: 180px; /* Tinggi otomatis besar */
+    background: rgba(0, 0, 0, 0.5); /* Latar gelap transparan */
+    border: 2px solid var(--secondary); /* Border Ungu Neon */
+    border-radius: 15px;
+    color: #ffffff; /* Teks putih */
+    padding: 20px;
+    font-family: 'Courier New', monospace; /* Font ala coding agar rapi */
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: none; /* Mencegah user menggeser manual */
+    outline: none;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5); /* Bayangan ke dalam */
+    transition: all 0.3s ease;
+}
+
+/* Efek saat kotak input diklik/aktif */
+.neon-textarea:focus {
+    border-color: var(--primary); /* Berubah jadi Cyan saat aktif */
+    box-shadow: 0 0 25px rgba(0, 242, 255, 0.2), inset 0 0 10px rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Teks placeholder (contoh format) */
+.neon-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+
+/* --- LEVEL SELECT LIST (DAFTAR HARI) --- */
+
+.level-item {
+    background: linear-gradient(90deg, rgba(0, 242, 255, 0.1), transparent);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.level-item:hover {
+    background: var(--primary);
+    color: black;
+    box-shadow: 0 0 15px var(--primary);
+    transform: translateX(5px);
+}
+
+/* Teks di dalam item level */
+.level-item strong { 
+    font-size: 1.2rem; 
+    display: block;
+}
+.level-item span { 
+    font-size: 0.9rem; 
+    opacity: 0.8; 
+}
+
+
+/* --- PREVIEW LIST (DI DALAM EDITOR) --- */
+
+.preview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--secondary); /* Aksen ungu di kiri */
+    animation: popIn 0.3s ease;
+}
+
+.preview-item span {
+    font-size: 0.95rem;
+    color: #ddd;
+}
+
+.preview-item b {
+    color: var(--primary); /* Kata bahasa Inggris berwarna Cyan */
+}
+
+/* Tombol Hapus (X) */
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent); /* Merah/Pink */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0 5px;
+    transition: 0.2s;
+}
+
+.delete-btn:hover { 
+    text-shadow: 0 0 8px var(--accent); 
+    transform: scale(1.2);
+}
+
+/* Animasi muncul item */
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
