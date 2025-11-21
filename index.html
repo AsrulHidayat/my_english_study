@@ -1,17 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>English Vocabulary Game - Day 1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Legends: The Awakening</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <h1>Vocabulary Game - Day 1</h1>
-    <p>Match the English words with Indonesian meanings</p>
+    <audio id="bgm" loop>
+        </audio>
 
-    <div id="game-container"></div>
+    <div id="app">
+        
+        <section id="login-screen" class="screen active">
+            <div class="login-box">
+                <h1>ENGLISH LEGENDS</h1>
+                <p class="subtitle">Awaken Your Vocabulary</p>
+                
+                <div class="avatar-selection">
+                    <p>Pilih Avatarmu:</p>
+                    <div class="avatars">
+                        <span class="avatar-option selected" data-avatar="🥷">🥷</span>
+                        <span class="avatar-option" data-avatar="👩‍🚀">👩‍🚀</span>
+                        <span class="avatar-option" data-avatar="🧛">🧛</span>
+                        <span class="avatar-option" data-avatar="🧙‍♂️">🧙‍♂️</span>
+                        <span class="avatar-option" data-avatar="🤖">🤖</span>
+                    </div>
+                </div>
+
+                <input type="text" id="username-input" placeholder="Masukkan Nama Pahlawan..." maxlength="12">
+                <button onclick="login()" class="btn-primary">MULAI PETUALANGAN</button>
+            </div>
+        </section>
+
+        <section id="dashboard-screen" class="screen">
+            <header>
+                <div class="user-profile">
+                    <span id="display-avatar">🥷</span>
+                    <div class="user-info">
+                        <span id="display-username">Player</span>
+                        <span id="display-level">Level 1</span>
+                    </div>
+                </div>
+                <button onclick="logout()" class="btn-small">Keluar</button>
+            </header>
+
+            <div class="menu-grid">
+                <div class="menu-card story" onclick="startStoryMode()">
+                    <h2>📜 Story Mode</h2>
+                    <p>Jalani misi dan kalahkan monster kata!</p>
+                </div>
+                <div class="menu-card leaderboard" onclick="showLeaderboard()">
+                    <h2>🏆 Leaderboard</h2>
+                    <p>Lihat pahlawan terkuat.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="game-screen" class="screen">
+            <div class="game-header">
+                <button onclick="quitGame()" class="btn-small">🏳️ Menyerah</button>
+                <div class="score-board">Score: <span id="current-score">0</span></div>
+                <div class="hp-bar"><div id="hp-fill"></div></div>
+            </div>
+
+            <div class="battle-arena">
+                <div class="enemy">
+                    <div class="enemy-avatar">👾</div>
+                    <div class="speech-bubble">Apa arti dari <b id="question-word">...</b>?</div>
+                </div>
+
+                <div class="player-area">
+                    <input type="text" id="answer-input" placeholder="Jawab dalam Bahasa Indonesia..." autocomplete="off">
+                    <button onclick="submitAnswer()" class="btn-attack">SERANG! (Enter)</button>
+                    <div id="feedback-msg"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="leaderboard-screen" class="screen">
+            <h2>🏆 Papan Peringkat</h2>
+            <ul id="leaderboard-list">
+                </ul>
+            <button onclick="showDashboard()" class="btn-primary">Kembali</button>
+        </section>
+
+    </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
