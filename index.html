@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Space Vocab: Neon Edition</title>
-    <link rel="stylesheet" href="style.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">       <link rel="stylesheet" href="css/login.css">      <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
 </head>
 <body>
 
-    <div class="area" >
-        <ul class="circles">
-            <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-        </ul>
-    </div>
-
+    <div class="area"><ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul></div>
     <canvas id="confetti-canvas"></canvas>
 
     <div id="app-container">
@@ -25,7 +24,6 @@
                     <h1 class="game-title">SPACE<br>VOCAB</h1>
                     <p class="subtitle">Neon Cyber Mission</p>
                 </div>
-                
                 <div class="avatar-selector">
                     <p style="margin-bottom: 10px; color: #888;">Pilih Avatar:</p>
                     <div class="avatars-grid">
@@ -35,41 +33,28 @@
                         <div class="avatar-opt" data-avatar="🐱">🐱</div>
                     </div>
                 </div>
-
                 <div class="input-group" style="width: 100%;">
                     <input type="text" id="username-input" placeholder="CODENAME..." autocomplete="off" maxlength="10">
                 </div>
-                
                 <button onclick="login()" class="btn-push btn-primary">🚀 START GAME</button>
             </div>
         </section>
 
         <section id="dashboard-screen" class="screen">
             <div class="glass-panel dashboard-panel">
-                
                 <header class="dash-header">
                     <div class="avatar-circle" id="display-avatar">🧑‍🚀</div>
                     <div class="user-details">
                         <h3 id="display-username">Player</h3>
                         <span class="badge">Rank: Cyber Cadet</span>
-                        <div class="score-card">
-                            HIGHSCORE <span class="value" id="display-highscore">0</span>
-                        </div>
+                        <div class="score-card">HIGHSCORE <span class="value" id="display-highscore">0</span></div>
                     </div>
                 </header>
-
                 <div class="menu-buttons">
-                    <button onclick="startStoryMode()" class="btn-menu btn-play">
-                        ⚔️ PLAY STORY
-                    </button>
-                    <button onclick="showLeaderboard()" class="btn-menu btn-rank">
-                        🏆 RANK
-                    </button>
-                    <button onclick="logout()" class="btn-menu btn-exit">
-                        🚪 EXIT
-                    </button>
+                    <button onclick="startStoryMode()" class="btn-menu btn-play">⚔️ PLAY STORY</button>
+                    <button onclick="showLeaderboard()" class="btn-menu btn-rank">🏆 RANK</button>
+                    <button onclick="logout()" class="btn-menu btn-exit">🚪 EXIT</button>
                 </div>
-
             </div>
         </section>
 
@@ -77,26 +62,19 @@
             <div class="glass-panel game-panel">
                 <div class="game-top-bar">
                     <button onclick="quitGame()" class="btn-icon" style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">🏳️</button>
-                    <div class="score-pill">
-                        💎 <span id="current-score">0</span>
-                    </div>
-                    <div class="hp-wrapper">
-                        ❤️ <div class="hp-track"><div id="hp-fill"></div></div>
-                    </div>
+                    <div class="score-pill">💎 <span id="current-score">0</span></div>
+                    <div class="hp-wrapper">❤️ <div class="hp-track"><div id="hp-fill"></div></div></div>
                 </div>
-
                 <div class="battle-stage">
                     <div class="enemy-floater">
                         <span class="enemy-emoji">👾</span>
                         <div class="shadow-pulse"></div>
                     </div>
-
                     <div class="question-card-pop">
                         <small style="color: #888; letter-spacing: 2px;">TRANSLATE:</small>
                         <h2 id="question-word">Loading...</h2>
                     </div>
                 </div>
-
                 <div class="control-deck">
                     <div id="feedback-area"></div>
                     <input type="text" id="answer-input" placeholder="JAWABAN..." autocomplete="off">
@@ -118,6 +96,11 @@
     <audio id="sfx-win" src="assets/true.mp3"></audio>
     <audio id="sfx-lose" src="assets/wrong.mp3"></audio>
 
-    <script src="script.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/leaderboard.js"></script>
+
 </body>
 </html>
