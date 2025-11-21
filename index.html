@@ -2,92 +2,124 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Legends: The Awakening</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Space Vocab: Galactic Mission</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <audio id="bgm" loop>
-        </audio>
+    <div class="area" >
+        <ul class="circles">
+            <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
 
-    <div id="app">
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="app-container">
         
         <section id="login-screen" class="screen active">
-            <div class="login-box">
-                <h1>ENGLISH LEGENDS</h1>
-                <p class="subtitle">Awaken Your Vocabulary</p>
+            <div class="glass-panel center-panel">
+                <div class="logo-area">
+                    <h1 class="game-title">SPACE<br>VOCAB</h1>
+                    <p class="subtitle">Misi Penyelamatan Kata</p>
+                </div>
                 
-                <div class="avatar-selection">
-                    <p>Pilih Avatarmu:</p>
-                    <div class="avatars">
-                        <span class="avatar-option selected" data-avatar="🥷">🥷</span>
-                        <span class="avatar-option" data-avatar="👩‍🚀">👩‍🚀</span>
-                        <span class="avatar-option" data-avatar="🧛">🧛</span>
-                        <span class="avatar-option" data-avatar="🧙‍♂️">🧙‍♂️</span>
-                        <span class="avatar-option" data-avatar="🤖">🤖</span>
+                <div class="avatar-selector">
+                    <p>Pilih Pilot:</p>
+                    <div class="avatars-grid">
+                        <div class="avatar-opt selected" data-avatar="🧑‍🚀">🧑‍🚀</div>
+                        <div class="avatar-opt" data-avatar="👽">👽</div>
+                        <div class="avatar-opt" data-avatar="🤖">🤖</div>
+                        <div class="avatar-opt" data-avatar="🐱">🐱</div>
                     </div>
                 </div>
 
-                <input type="text" id="username-input" placeholder="Masukkan Nama Pahlawan..." maxlength="12">
-                <button onclick="login()" class="btn-primary">MULAI PETUALANGAN</button>
+                <div class="input-group">
+                    <input type="text" id="username-input" placeholder="Nama Kapten..." autocomplete="off" maxlength="10">
+                </div>
+                
+                <button onclick="login()" class="btn-push btn-primary">🚀 MULAI MISI</button>
             </div>
         </section>
 
         <section id="dashboard-screen" class="screen">
-            <header>
-                <div class="user-profile">
-                    <span id="display-avatar">🥷</span>
-                    <div class="user-info">
-                        <span id="display-username">Player</span>
-                        <span id="display-level">Level 1</span>
+            <div class="glass-panel dashboard-panel">
+                <header class="dash-header">
+                    <div class="profile-section">
+                        <div class="avatar-circle" id="display-avatar">🧑‍🚀</div>
+                        <div class="user-details">
+                            <h3 id="display-username">Kapten</h3>
+                            <span class="badge">Rank: Cadet</span>
+                        </div>
                     </div>
-                </div>
-                <button onclick="logout()" class="btn-small">Keluar</button>
-            </header>
+                    <div class="score-card">
+                        <span class="label">HIGHSCORE</span>
+                        <span class="value" id="display-highscore">0</span>
+                    </div>
+                </header>
 
-            <div class="menu-grid">
-                <div class="menu-card story" onclick="startStoryMode()">
-                    <h2>📜 Story Mode</h2>
-                    <p>Jalani misi dan kalahkan monster kata!</p>
-                </div>
-                <div class="menu-card leaderboard" onclick="showLeaderboard()">
-                    <h2>🏆 Leaderboard</h2>
-                    <p>Lihat pahlawan terkuat.</p>
+                <div class="menu-buttons">
+                    <button onclick="startStoryMode()" class="btn-push btn-accent big-btn">
+                        <span class="icon">⚔️</span> STORY MODE
+                    </button>
+                    <div class="row-btns">
+                        <button onclick="showLeaderboard()" class="btn-push btn-secondary">
+                            🏆 RANK
+                        </button>
+                        <button onclick="logout()" class="btn-push btn-danger">
+                            🚪 EXIT
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="game-screen" class="screen">
-            <div class="game-header">
-                <button onclick="quitGame()" class="btn-small">🏳️ Menyerah</button>
-                <div class="score-board">Score: <span id="current-score">0</span></div>
-                <div class="hp-bar"><div id="hp-fill"></div></div>
-            </div>
-
-            <div class="battle-arena">
-                <div class="enemy">
-                    <div class="enemy-avatar">👾</div>
-                    <div class="speech-bubble">Apa arti dari <b id="question-word">...</b>?</div>
+            <div class="glass-panel game-panel">
+                <div class="game-top-bar">
+                    <button onclick="quitGame()" class="btn-icon">🏳️</button>
+                    <div class="score-pill">
+                        💎 <span id="current-score">0</span>
+                    </div>
+                    <div class="hp-wrapper">
+                        ❤️ <div class="hp-track"><div id="hp-fill"></div></div>
+                    </div>
                 </div>
 
-                <div class="player-area">
-                    <input type="text" id="answer-input" placeholder="Jawab dalam Bahasa Indonesia..." autocomplete="off">
-                    <button onclick="submitAnswer()" class="btn-attack">SERANG! (Enter)</button>
-                    <div id="feedback-msg"></div>
+                <div class="battle-stage">
+                    <div class="enemy-floater">
+                        <span class="enemy-emoji">👾</span>
+                        <div class="shadow-pulse"></div>
+                    </div>
+
+                    <div class="question-card-pop">
+                        <small>ARTIKAN KATA:</small>
+                        <h2 id="question-word">Loading...</h2>
+                    </div>
+                </div>
+
+                <div class="control-deck">
+                    <div id="feedback-area"></div>
+                    <input type="text" id="answer-input" placeholder="Ketik jawaban..." autocomplete="off">
+                    <button onclick="submitAnswer()" class="btn-push btn-action">TEMBAK! (ENTER)</button>
                 </div>
             </div>
         </section>
 
         <section id="leaderboard-screen" class="screen">
-            <h2>🏆 Papan Peringkat</h2>
-            <ul id="leaderboard-list">
-                </ul>
-            <button onclick="showDashboard()" class="btn-primary">Kembali</button>
+            <div class="glass-panel center-panel">
+                <h2>HALL OF FAME</h2>
+                <ul id="leaderboard-list" class="scrollable-list"></ul>
+                <button onclick="showDashboard()" class="btn-push btn-secondary">KEMBALI KE MARKAS</button>
+            </div>
         </section>
 
     </div>
+
+    <audio id="sfx-win" src="assets/true.mp3"></audio>
+    <audio id="sfx-lose" src="assets/wrong.mp3"></audio>
 
     <script src="script.js"></script>
 </body>

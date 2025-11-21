@@ -1,256 +1,246 @@
-// --- CONFIG & DATA ---
-// Data Kosakata (Level 1)
-const gameData = [
-    {en: "I", id: "saya"},
-    {en: "You", id: "kamu"},
-    {en: "We", id: "kita"},
-    {en: "They", id: "mereka"},
-    {en: "Go", id: "pergi"},
-    {en: "Come", id: "datang"},
-    {en: "Want", id: "ingin"},
-    {en: "Need", id: "butuh"},
-    {en: "Have", id: "punya"},
-    {en: "Like", id: "suka"},
+// --- DATA & CONFIG ---
+const vocabData = [
+    {en: "Run", id: "lari"}, {en: "Walk", id: "jalan"},
+    {en: "Eat", id: "makan"}, {en: "Drink", id: "minum"},
+    {en: "Sleep", id: "tidur"}, {en: "Jump", id: "lompat"},
+    {en: "Swim", id: "renang"}, {en: "Fly", id: "terbang"},
+    {en: "Read", id: "baca"}, {en: "Write", id: "tulis"},
+    {en: "Sing", id: "nyanyi"}, {en: "Dance", id: "tari"}
 ];
 
-// Audio (Pastikan path ini sesuai dengan file yang Anda upload)
-const audioTrue = new Audio("assets/true.mp3");
-const audioWrong = new Audio("assets/wrong.mp3");
+// Sounds
+const sfxWin = document.getElementById('sfx-win');
+const sfxLose = document.getElementById('sfx-lose');
 
-// State Game
-let currentUser = {
-    name: "",
-    avatar: "🥷",
-    score: 0,
-    highScore: 0
+// Game State
+let state = {
+    user: "Guest", avatar: "🧑‍🚀", score: 0, highScore: 0, 
+    hp: 100, active: false, qIndex: 0
 };
-let currentQuestionIndex = 0;
-let hp = 100;
-let isGameActive = false;
 
-// --- DOM ELEMENTS ---
-const screens = document.querySelectorAll('.screen');
-const usernameInput = document.getElementById('username-input');
-const avatarOptions = document.querySelectorAll('.avatar-option');
-const displayAvatar = document.getElementById('display-avatar');
-const displayUsername = document.getElementById('display-username');
-const displayLevel = document.getElementById('display-level');
-const questionWord = document.getElementById('question-word');
-const answerInput = document.getElementById('answer-input');
-const hpFill = document.getElementById('hp-fill');
-const currentScoreDisplay = document.getElementById('current-score');
-const feedbackMsg = document.getElementById('feedback-msg');
-const leaderboardList = document.getElementById('leaderboard-list');
-
-// --- NAVIGASI SCREEN ---
-function showScreen(screenId) {
-    screens.forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
+// --- UI NAVIGATION ---
+function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    // Sedikit delay agar transisi CSS terlihat smooth
+    setTimeout(() => {
+        document.getElementById(screenId).classList.add('active');
+    }, 50);
 }
 
-// --- SYSTEM LOGIN ---
-// Pilih Avatar
-avatarOptions.forEach(opt => {
-    opt.addEventListener('click', () => {
-        avatarOptions.forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        currentUser.avatar = opt.dataset.avatar;
+// Fungsi yang sebelumnya hilang!
+function showDashboard() {
+    updateDashUI(); // Update data terbaru (skor/nama) sebelum masuk
+    switchScreen('dashboard-screen');
+}
+
+// --- LOGIN LOGIC ---
+document.querySelectorAll('.avatar-opt').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('.avatar-opt').forEach(a => a.classList.remove('selected'));
+        el.classList.add('selected');
+        state.avatar = el.dataset.avatar;
     });
 });
 
 function login() {
-    const name = usernameInput.value.trim();
-    if (!name) return alert("Harap masukkan nama pahlawan!");
+    const name = document.getElementById('username-input').value.trim();
+    if(!name) return alert("Harap isi nama Kapten!");
     
-    currentUser.name = name;
+    state.user = name;
     
-    // Cek data lama di LocalStorage
-    const savedData = JSON.parse(localStorage.getItem('english_legends_' + name));
-    if (savedData) {
-        currentUser.highScore = savedData.highScore || 0;
-        alert(`Selamat datang kembali, ${name}! Skor Tertinggimu: ${currentUser.highScore}`);
-    }
+    // Load Progress dari LocalStorage
+    const saved = JSON.parse(localStorage.getItem('space_vocab_' + name));
+    if(saved) state.highScore = saved.highScore || 0;
 
-    updateDashboard();
-    showScreen('dashboard-screen');
+    showDashboard(); // Gunakan fungsi yang sudah diperbaiki
 }
 
 function logout() {
-    currentUser = { name: "", avatar: "🥷", score: 0, highScore: 0 };
-    usernameInput.value = "";
-    showScreen('login-screen');
+    document.getElementById('username-input').value = "";
+    switchScreen('login-screen');
 }
 
-function updateDashboard() {
-    displayUsername.textContent = currentUser.name;
-    displayAvatar.textContent = currentUser.avatar;
-    displayLevel.textContent = "Rank: Novice"; // Bisa dikembangkan nanti
+function updateDashUI() {
+    document.getElementById('display-username').textContent = state.user;
+    document.getElementById('display-avatar').textContent = state.avatar;
+    document.getElementById('display-highscore').textContent = state.highScore;
 }
 
-// --- GAMEPLAY (STORY MODE) ---
+// --- GAME ENGINE ---
 function startStoryMode() {
-    currentQuestionIndex = 0;
-    hp = 100;
-    currentUser.score = 0;
-    isGameActive = true;
+    state.score = 0;
+    state.hp = 100;
+    state.qIndex = 0;
+    state.active = true;
     
-    // Shuffle Pertanyaan (Acak urutan)
-    gameData.sort(() => Math.random() - 0.5);
+    // Shuffle (Acak) Soal
+    vocabData.sort(() => Math.random() - 0.5);
     
     updateGameUI();
-    loadQuestion();
-    showScreen('game-screen');
-    
-    // Fokus ke input setelah layar berganti
-    setTimeout(() => answerInput.focus(), 500);
+    nextQuestion();
+    switchScreen('game-screen');
+    setTimeout(() => document.getElementById('answer-input').focus(), 500);
 }
 
 function updateGameUI() {
-    hpFill.style.width = hp + "%";
-    currentScoreDisplay.textContent = currentUser.score;
-    if (hp < 30) hpFill.style.backgroundColor = "#ff0055";
-    else hpFill.style.backgroundColor = "#00ff88";
-}
-
-function loadQuestion() {
-    if (currentQuestionIndex >= gameData.length) {
-        endGame(true); // Menang semua soal
-        return;
-    }
+    document.getElementById('current-score').textContent = state.score;
+    const hpBar = document.getElementById('hp-fill');
+    hpBar.style.width = state.hp + "%";
     
-    const word = gameData[currentQuestionIndex];
-    questionWord.textContent = word.en;
-    answerInput.value = "";
-    feedbackMsg.textContent = "";
-    answerInput.focus();
+    // Warna HP: Hijau jika aman, Merah jika kritis
+    hpBar.style.backgroundColor = state.hp < 30 ? "#ff4757" : "#00b09b";
 }
 
-// Event Listener untuk tombol Enter
-answerInput.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        submitAnswer();
-    }
+function nextQuestion() {
+    // Cek apakah soal sudah habis
+    if(state.qIndex >= vocabData.length) return finishGame(true);
+    
+    const word = vocabData[state.qIndex];
+    const card = document.querySelector('.question-card-pop');
+    
+    // Reset Animasi Kartu agar efek 'Pop' muncul setiap ganti soal
+    card.style.animation = 'none';
+    card.offsetHeight; /* Trigger reflow CSS */
+    card.style.animation = 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    
+    document.getElementById('question-word').textContent = word.en;
+    document.getElementById('answer-input').value = "";
+    document.getElementById('feedback-area').innerHTML = "";
+    document.getElementById('answer-input').focus();
+}
+
+// Handle Enter Key pada Input
+document.getElementById('answer-input').addEventListener("keypress", (e) => {
+    if(e.key === "Enter") submitAnswer();
 });
 
 function submitAnswer() {
-    if (!isGameActive) return;
+    if(!state.active) return;
+    
+    const input = document.getElementById('answer-input');
+    const answer = input.value.trim().toLowerCase();
+    const correct = vocabData[state.qIndex].id.toLowerCase();
+    const feedback = document.getElementById('feedback-area');
 
-    const answer = answerInput.value.trim().toLowerCase();
-    const correct = gameData[currentQuestionIndex].id.toLowerCase();
-
-    if (answer === correct) {
-        // BENAR
-        audioTrue.currentTime = 0;
-        audioTrue.play();
-        currentUser.score += 10;
-        feedbackMsg.textContent = "Sempurna! +10 Poin";
-        feedbackMsg.className = "correct";
-        
-        // Animasi musuh kena hit (opsional)
-        document.querySelector('.enemy-avatar').classList.add('shake');
-        setTimeout(()=> document.querySelector('.enemy-avatar').classList.remove('shake'), 500);
-
-        currentQuestionIndex++;
-        setTimeout(loadQuestion, 1000); // Jeda 1 detik sebelum soal berikutnya
-
+    if(answer === correct) {
+        // JAWABAN BENAR
+        sfxWin.currentTime = 0; sfxWin.play();
+        state.score += 10;
+        feedback.innerHTML = "<span class='msg-correct'>✨ TEPAT SEKALI!</span>";
+        fireConfetti(); // Efek Kembang Api
+        state.qIndex++;
+        setTimeout(nextQuestion, 1000); // Jeda 1 detik
     } else {
-        // SALAH
-        audioWrong.currentTime = 0;
-        audioWrong.play();
-        hp -= 20; // Kurangi Darah
-        feedbackMsg.textContent = `Salah! Jawaban: ${correct}`;
-        feedbackMsg.className = "wrong";
+        // JAWABAN SALAH
+        sfxLose.currentTime = 0; sfxLose.play();
+        state.hp -= 20;
+        feedback.innerHTML = `<span class='msg-wrong'>❌ SALAH! Jawabannya: ${correct}</span>`;
         
-        // Animasi layar getar
-        document.getElementById('game-screen').classList.add('shake');
-        setTimeout(()=> document.getElementById('game-screen').classList.remove('shake'), 500);
+        // Efek Getar Layar
+        document.querySelector('.game-panel').classList.add('shake-anim');
+        setTimeout(()=> document.querySelector('.game-panel').classList.remove('shake-anim'), 500);
 
-        if (hp <= 0) {
-            setTimeout(() => endGame(false), 1000);
-        } else {
-            // Tetap lanjut ke soal berikutnya atau ulang? 
-            // Di mode cerita ini, kita lanjut saja tapi darah berkurang.
-            currentQuestionIndex++;
-            setTimeout(loadQuestion, 1500);
+        if(state.hp <= 0) setTimeout(() => finishGame(false), 1000);
+        else {
+            state.qIndex++; // Lanjut soal berikutnya meski salah
+            setTimeout(nextQuestion, 1500);
         }
     }
     updateGameUI();
 }
 
-function endGame(isWin) {
-    isGameActive = false;
-    if (isWin) {
-        alert(`Misi Selesai! Skor Akhir: ${currentUser.score}`);
-    } else {
-        alert("Kamu Kehabisan Tenaga! Game Over.");
+function finishGame(win) {
+    state.active = false;
+    const msg = win ? "MISI SUKSES! Semua kata terjawab." : "MISI GAGAL! Pesawat rusak.";
+    alert(`${msg}\nSkor Akhir: ${state.score}`);
+    
+    // Simpan High Score Pribadi
+    if(state.score > state.highScore) {
+        state.highScore = state.score;
+        localStorage.setItem('space_vocab_' + state.user, JSON.stringify({highScore: state.highScore}));
     }
     
-    saveScore();
-    showScreen('dashboard-screen');
+    // Simpan ke Global Leaderboard (Sederhana)
+    let lb = JSON.parse(localStorage.getItem('global_lb')) || [];
+    // Cek jika user sudah ada, update skor jika lebih tinggi
+    let existing = lb.find(p => p.name === state.user);
+    if(existing) {
+        if(state.score > existing.score) existing.score = state.score;
+        existing.avatar = state.avatar;
+    } else {
+        lb.push({name: state.user, score: state.score, avatar: state.avatar});
+    }
+    
+    // Urutkan dari terbesar ke terkecil
+    lb.sort((a,b) => b.score - a.score);
+    // Ambil Top 5 saja
+    localStorage.setItem('global_lb', JSON.stringify(lb.slice(0, 5)));
+    
+    showDashboard();
 }
 
 function quitGame() {
-    if(confirm("Yakin ingin menyerah? Progress tidak akan disimpan.")) {
-        showScreen('dashboard-screen');
+    if(confirm("Batalkan misi dan kembali ke markas?")) {
+        state.active = false;
+        showDashboard();
     }
 }
 
-// --- LEADERBOARD SYSTEM ---
-function saveScore() {
-    // Update highscore user saat ini
-    if (currentUser.score > currentUser.highScore) {
-        currentUser.highScore = currentUser.score;
-    }
-
-    // Simpan data personal
-    const userData = { highScore: currentUser.highScore };
-    localStorage.setItem('english_legends_' + currentUser.name, JSON.stringify(userData));
-
-    // Simpan ke Global Leaderboard (Simulasi Array)
-    let leaderboard = JSON.parse(localStorage.getItem('global_leaderboard')) || [];
-    
-    // Cek apakah user sudah ada di leaderboard, update jika skor lebih tinggi
-    const existingUserIndex = leaderboard.findIndex(u => u.name === currentUser.name);
-    if (existingUserIndex > -1) {
-        if (currentUser.score > leaderboard[existingUserIndex].score) {
-            leaderboard[existingUserIndex].score = currentUser.score;
-            leaderboard[existingUserIndex].avatar = currentUser.avatar;
-        }
-    } else {
-        leaderboard.push({
-            name: currentUser.name,
-            score: currentUser.score,
-            avatar: currentUser.avatar
-        });
-    }
-
-    // Urutkan dan ambil Top 5
-    leaderboard.sort((a, b) => b.score - a.score);
-    leaderboard = leaderboard.slice(0, 5);
-
-    localStorage.setItem('global_leaderboard', JSON.stringify(leaderboard));
-}
-
+// --- LEADERBOARD DISPLAY ---
 function showLeaderboard() {
-    const leaderboard = JSON.parse(localStorage.getItem('global_leaderboard')) || [];
-    leaderboardList.innerHTML = "";
+    const list = document.getElementById('leaderboard-list');
+    const lb = JSON.parse(localStorage.getItem('global_lb')) || [];
+    list.innerHTML = "";
     
-    if (leaderboard.length === 0) {
-        leaderboardList.innerHTML = "<li style='text-align:center'>Belum ada data pahlawan.</li>";
+    if(lb.length === 0) {
+        list.innerHTML = "<li style='justify-content:center; opacity:0.5;'>Belum ada data.</li>";
     } else {
-        leaderboard.forEach((player, index) => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span>#${index + 1} ${player.avatar} <b>${player.name}</b></span>
-                <span style="color:var(--primary)">${player.score} pts</span>
-            `;
-            leaderboardList.appendChild(li);
+        lb.forEach((p, i) => {
+            // Tambahkan Crown 👑 untuk juara 1
+            let rankIcon = i === 0 ? "👑" : `#${i+1}`;
+            list.innerHTML += `
+                <li>
+                    <span>${rankIcon} ${p.avatar} <strong>${p.name}</strong></span> 
+                    <span style="color:#ffd700; font-weight:bold;">${p.score} pts</span>
+                </li>`;
         });
     }
-    
-    showScreen('leaderboard-screen');
+    switchScreen('leaderboard-screen');
 }
 
-function showDashboard() {
-    showScreen('dashboard-screen');
+// --- EFEK PARTIKEL (CONFETTI) ---
+function fireConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; 
+    canvas.height = window.innerHeight;
+    
+    let particles = Array.from({length: 40}, () => ({
+        x: window.innerWidth/2, 
+        y: window.innerHeight/2,
+        vx: (Math.random()-0.5)*15, 
+        vy: (Math.random()-0.5)*15,
+        color: `hsl(${Math.random()*360}, 100%, 60%)`, 
+        life: 60,
+        size: Math.random() * 5 + 2
+    }));
+    
+    function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach((p, i) => {
+            p.x += p.vx; 
+            p.y += p.vy; 
+            p.life--;
+            p.vy += 0.5; // Gravitasi
+            ctx.fillStyle = p.color; 
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+            ctx.fill();
+            if(p.life<=0) particles.splice(i,1);
+        });
+        if(particles.length) requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    draw();
 }
