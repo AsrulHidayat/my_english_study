@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Space Vocab: Galactic Mission</title>
+    <title>Space Vocab: Neon Edition</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap" rel="stylesheet">
 </head>
@@ -23,11 +23,11 @@
             <div class="glass-panel center-panel">
                 <div class="logo-area">
                     <h1 class="game-title">SPACE<br>VOCAB</h1>
-                    <p class="subtitle">Misi Penyelamatan Kata</p>
+                    <p class="subtitle">Neon Cyber Mission</p>
                 </div>
                 
                 <div class="avatar-selector">
-                    <p>Pilih Pilot:</p>
+                    <p style="margin-bottom: 10px; color: #888;">Pilih Avatar:</p>
                     <div class="avatars-grid">
                         <div class="avatar-opt selected" data-avatar="🧑‍🚀">🧑‍🚀</div>
                         <div class="avatar-opt" data-avatar="👽">👽</div>
@@ -36,11 +36,11 @@
                     </div>
                 </div>
 
-                <div class="input-group">
-                    <input type="text" id="username-input" placeholder="Nama Kapten..." autocomplete="off" maxlength="10">
+                <div class="input-group" style="width: 100%;">
+                    <input type="text" id="username-input" placeholder="CODENAME..." autocomplete="off" maxlength="10">
                 </div>
                 
-                <button onclick="login()" class="btn-push btn-primary">🚀 MULAI MISI</button>
+                <button onclick="login()" class="btn-push btn-primary">🚀 START GAME</button>
             </div>
         </section>
 
@@ -50,8 +50,8 @@
                     <div class="profile-section">
                         <div class="avatar-circle" id="display-avatar">🧑‍🚀</div>
                         <div class="user-details">
-                            <h3 id="display-username">Kapten</h3>
-                            <span class="badge">Rank: Cadet</span>
+                            <h3 id="display-username">Player</h3>
+                            <span class="badge">Rank: Cyber Cadet</span>
                         </div>
                     </div>
                     <div class="score-card">
@@ -62,7 +62,7 @@
 
                 <div class="menu-buttons">
                     <button onclick="startStoryMode()" class="btn-push btn-accent big-btn">
-                        <span class="icon">⚔️</span> STORY MODE
+                        <span class="icon">⚔️</span> PLAY STORY
                     </button>
                     <div class="row-btns">
                         <button onclick="showLeaderboard()" class="btn-push btn-secondary">
@@ -79,7 +79,7 @@
         <section id="game-screen" class="screen">
             <div class="glass-panel game-panel">
                 <div class="game-top-bar">
-                    <button onclick="quitGame()" class="btn-icon">🏳️</button>
+                    <button onclick="quitGame()" class="btn-icon" style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">🏳️</button>
                     <div class="score-pill">
                         💎 <span id="current-score">0</span>
                     </div>
@@ -95,24 +95,24 @@
                     </div>
 
                     <div class="question-card-pop">
-                        <small>ARTIKAN KATA:</small>
+                        <small style="color: #888; letter-spacing: 2px;">TRANSLATE:</small>
                         <h2 id="question-word">Loading...</h2>
                     </div>
                 </div>
 
                 <div class="control-deck">
                     <div id="feedback-area"></div>
-                    <input type="text" id="answer-input" placeholder="Ketik jawaban..." autocomplete="off">
-                    <button onclick="submitAnswer()" class="btn-push btn-action">TEMBAK! (ENTER)</button>
+                    <input type="text" id="answer-input" placeholder="JAWABAN..." autocomplete="off">
+                    <button onclick="submitAnswer()" class="btn-push btn-action">⚡ FIRE! (ENTER)</button>
                 </div>
             </div>
         </section>
 
         <section id="leaderboard-screen" class="screen">
             <div class="glass-panel center-panel">
-                <h2>HALL OF FAME</h2>
+                <h2 style="color: var(--primary); text-shadow: 0 0 10px var(--primary); margin-bottom: 20px;">HALL OF FAME</h2>
                 <ul id="leaderboard-list" class="scrollable-list"></ul>
-                <button onclick="showDashboard()" class="btn-push btn-secondary">KEMBALI KE MARKAS</button>
+                <button onclick="showDashboard()" class="btn-push btn-secondary">BACK TO BASE</button>
             </div>
         </section>
 
