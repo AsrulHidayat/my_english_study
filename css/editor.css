@@ -119,6 +119,37 @@
     transform: scale(1.2);
 }
 
+/* Tambahan untuk Edit/Delete */
+
+.level-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.action-btn {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--text);
+    color: var(--text);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-edit:hover {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+.btn-delete:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
 /* Animasi muncul item */
 @keyframes popIn {
     from { opacity: 0; transform: scale(0.9); }
