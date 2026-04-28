@@ -4,293 +4,143 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belajar Bahasa Inggris</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-:root{--glass:rgba(255,255,255,.55);--glass2:rgba(255,255,255,.35);--blur:blur(18px);--primary:#6366f1;--primary-h:#4f46e5;--txt:#1e293b;--muted:#94a3b8;--border:rgba(255,255,255,.6);--green:#10b981;--amber:#f59e0b;--soft:rgba(238,242,255,.7);}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;color:var(--txt);min-height:100vh;display:flex;justify-content:center;padding:24px;
-  background:linear-gradient(135deg,#dbeafe 0%,#e0e7ff 25%,#fce7f3 50%,#ede9fe 75%,#e0f2fe 100%);
-  background-attachment:fixed;}
-.app{width:100%;max-width:720px;}
-
-/* Header */
-.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;
-  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-radius:16px;padding:14px 20px;border:1px solid var(--border);
-  box-shadow:0 4px 16px rgba(0,0,0,.04);}
-.top-bar h2{font-size:20px;font-weight:700;}
-.streak{background:rgba(255,251,235,.7);color:var(--amber);font-weight:700;padding:6px 14px;border-radius:99px;font-size:13px;}
-
-/* Progress Steps */
-.steps{display:flex;gap:8px;margin-bottom:20px;padding:0 4px;}
-.step-dot{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.5);transition:background .3s;box-shadow:inset 0 1px 2px rgba(0,0,0,.06);}
-.step-dot.done{background:var(--green);}
-.step-dot.active{background:var(--primary);}
-
-.step-labels{display:flex;gap:8px;margin-bottom:24px;}
-.step-label{flex:1;text-align:center;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;padding:10px 8px;border-radius:12px;transition:all .2s;
-  background:var(--glass2);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid transparent;}
-.step-label:hover{background:var(--glass);}
-.step-label.active{color:var(--primary);background:var(--soft);border-color:rgba(99,102,241,.3);box-shadow:0 2px 12px rgba(99,102,241,.1);}
-.step-label.done{color:var(--green);}
-
-/* Panel (glass card) */
-.panel{display:none;
-  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-radius:24px;padding:28px;border:1px solid var(--border);
-  box-shadow:0 8px 32px rgba(0,0,0,.06);animation:fadeUp .35s ease;}
-.panel.show{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-.panel h1{font-size:22px;margin-bottom:6px;}
-.panel .desc{color:var(--muted);margin-bottom:20px;font-size:14px;line-height:1.5;}
-
-/* Reading */
-.text-box{background:rgba(255,255,255,.4);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;line-height:2;font-size:15px;}
-.text-box .label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;}
-.text-box .id-text{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:14px;line-height:1.7;}
-.w{cursor:pointer;border-bottom:2px dashed #a5b4fc;padding:0 2px;border-radius:3px;transition:all .15s;}
-.w:hover,.w.saved{background:var(--soft);color:var(--primary);}
-.w.saved{border-bottom-style:solid;border-bottom-color:var(--primary);}
-.saved-words{background:rgba(255,255,255,.35);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:16px;padding:16px;}
-.saved-words h3{font-size:13px;color:var(--muted);margin-bottom:10px;}
-.tags{display:flex;flex-wrap:wrap;gap:8px;}
-.tag{background:rgba(255,255,255,.6);color:var(--primary);padding:5px 14px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid rgba(99,102,241,.15);backdrop-filter:blur(6px);}
-
-/* Listening */
-.player{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.4);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:99px;padding:10px 18px;margin-bottom:18px;}
-.play-btn{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:16px;cursor:pointer;flex-shrink:0;transition:all .2s;box-shadow:0 4px 12px rgba(99,102,241,.3);}
-.play-btn:hover{background:var(--primary-h);transform:scale(1.05);}
-.track{flex:1;height:6px;background:rgba(0,0,0,.08);border-radius:99px;overflow:hidden;}
-.track-fill{height:100%;background:linear-gradient(90deg,var(--primary),#818cf8);width:0%;transition:width .3s linear;border-radius:99px;}
-.time{font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums;}
-.sub-btns{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-.sub-btn{padding:7px 16px;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.35);backdrop-filter:blur(8px);border-radius:10px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
-.sub-btn:hover{background:rgba(255,255,255,.6);}
-.sub-btn.on{background:var(--soft);color:var(--primary);border-color:rgba(99,102,241,.3);}
-.transcript{background:rgba(255,255,255,.4);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:16px;padding:18px;}
-.transcript .t-id{color:var(--muted);font-style:italic;font-size:13px;margin-bottom:8px;line-height:1.6;}
-.transcript .t-en{font-size:15px;font-weight:500;line-height:1.7;}
-
-/* Speaking */
-.speak-card{text-align:center;padding:40px 20px;background:rgba(255,255,255,.35);backdrop-filter:blur(10px);border-radius:20px;border:2px dashed rgba(99,102,241,.2);}
-.speak-card .emoji{font-size:60px;margin-bottom:16px;letter-spacing:10px;}
-.speak-card .prompt{font-size:16px;font-weight:600;margin-bottom:24px;}
-.hint-btn{background:var(--soft);color:var(--primary);border:none;padding:8px 20px;border-radius:99px;font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
-.hint-btn:hover{background:rgba(224,231,255,.8);transform:translateY(-1px);}
-.hint-box{display:none;margin-top:18px;padding:16px;background:rgba(255,255,255,.5);backdrop-filter:blur(8px);border-radius:12px;text-align:left;border-left:4px solid var(--primary);line-height:1.7;}
-.hint-box.show{display:block;animation:fadeUp .3s ease;}
-
-/* Footer nav */
-.nav-footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
-.nav-btn{padding:12px 28px;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .2s;}
-.nav-btn:hover{transform:translateY(-1px);}
-.btn-back{background:var(--glass);backdrop-filter:var(--blur);color:var(--txt);border:1px solid var(--border);}
-.btn-back:hover{background:rgba(255,255,255,.7);}
-.btn-next{background:var(--primary);color:#fff;box-shadow:0 4px 16px rgba(99,102,241,.3);}
-.btn-next:hover{background:var(--primary-h);}
-.btn-done{background:var(--green);box-shadow:0 4px 16px rgba(16,185,129,.3);}
-
-/* Success */
-.success{text-align:center;padding:40px 20px;}
-.success .big{font-size:64px;margin-bottom:16px;}
-.success h1{font-size:28px;margin-bottom:8px;}
-.stats{display:inline-flex;flex-direction:column;gap:12px;margin-top:20px;text-align:left;}
-.stat{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;
-  background:rgba(255,255,255,.4);backdrop-filter:blur(8px);padding:10px 16px;border-radius:12px;border:1px solid var(--border);}
-.stat-icon{width:36px;height:36px;background:var(--soft);color:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-
-/* Popup */
-.popup{display:none;position:fixed;z-index:99;
-  background:rgba(255,255,255,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid var(--border);border-radius:16px;padding:14px 16px;max-width:240px;
-  box-shadow:0 8px 32px rgba(0,0,0,.1);pointer-events:none;}
-.popup .pw{font-size:16px;font-weight:700;color:var(--primary);}
-.popup .pp{font-size:12px;color:var(--muted);margin-bottom:6px;}
-.popup .pa{font-size:14px;font-weight:600;margin-bottom:6px;}
-.popup .pc{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-  <div class="top-bar">
-    <h2>📘 Sesi Belajar</h2>
-    <div class="streak">🔥 Hari ke-1</div>
-  </div>
-  <div class="steps"><div class="step-dot active" id="sd0"></div><div class="step-dot" id="sd1"></div><div class="step-dot" id="sd2"></div></div>
-  <div class="step-labels">
-    <div class="step-label active" id="sl0" onclick="goStep(0)">📖 Membaca</div>
-    <div class="step-label" id="sl1" onclick="goStep(1)">🎧 Mendengar</div>
-    <div class="step-label" id="sl2" onclick="goStep(2)">🗣️ Berbicara</div>
-  </div>
+<div class="app" id="app">
 
-  <!-- READING -->
-  <div class="panel show" id="p0">
-    <h1>📖 Membaca</h1>
-    <div class="desc">Baca teks di bawah. <strong>Klik kata bergaris</strong> untuk melihat arti dan menyimpannya.</div>
-    <div class="text-box">
-      <div class="label">🇮🇩 Indonesia</div>
-      <div class="id-text">Setiap pagi, Sari pergi ke pasar untuk membeli sayuran segar. Dia selalu memilih tomat merah dan wortel besar. Para pedagang di sana sangat ramah dan sering memberi harga istimewa.</div>
-      <div class="label">🇬🇧 English</div>
-      <div id="textEn"></div>
-    </div>
-    <div class="saved-words">
-      <h3>📚 Kosakata Tersimpan</h3>
-      <div class="tags" id="tagList"><span style="color:var(--muted);font-size:12px;">Belum ada — klik kata di atas</span></div>
-    </div>
-  </div>
-
-  <!-- LISTENING -->
-  <div class="panel" id="p1">
-    <h1>🎧 Mendengar</h1>
-    <div class="desc">Dengarkan audio lalu ikuti teksnya. Atur subtitle sesuai kebutuhan.</div>
-    <div class="player">
-      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
-      <div class="track"><div class="track-fill" id="tFill"></div></div>
-      <span class="time" id="tTime">0:00</span>
-    </div>
-    <div class="sub-btns">
-      <button class="sub-btn on" onclick="setSub('both',this)">🇮🇩 + 🇬🇧</button>
-      <button class="sub-btn" onclick="setSub('en',this)">🇬🇧 Saja</button>
-      <button class="sub-btn" onclick="setSub('id',this)">🇮🇩 Saja</button>
-      <button class="sub-btn" onclick="setSub('off',this)">Sembunyikan</button>
-    </div>
-    <div class="transcript">
-      <div class="t-id" id="trId">Setiap pagi, Sari pergi ke pasar untuk membeli sayuran segar. Dia selalu memilih tomat merah dan wortel besar.</div>
-      <div class="t-en" id="trEn">Every morning, Sari goes to the market to buy fresh vegetables. She always chooses red tomatoes and large carrots.</div>
-    </div>
-  </div>
-
-  <!-- SPEAKING -->
-  <div class="panel" id="p2">
-    <h1>🗣️ Berbicara</h1>
-    <div class="desc">Deskripsikan gambar di bawah <strong>dengan suara lantang</strong> dalam bahasa Inggris.</div>
-    <div class="speak-card">
-      <div class="emoji">🍅🥕🥬</div>
-      <div class="prompt">What vegetables do you see?</div>
-      <button class="hint-btn" onclick="document.getElementById('hintBox').classList.toggle('show')">💡 Lihat contoh jawaban</button>
-      <div class="hint-box" id="hintBox">
-        <div style="font-weight:700;font-size:14px;margin-bottom:4px;">"I see red tomatoes, orange carrots, and green lettuce."</div>
-        <div style="color:var(--muted);font-size:13px;">"Saya melihat tomat merah, wortel oranye, dan selada hijau."</div>
+  <!-- ========== VIEW: HOME ========== -->
+  <div class="view show" id="viewHome">
+    <div class="home-header glass">
+      <div>
+        <div class="greeting">Halo! 👋</div>
+        <div class="greeting-sub">Siap belajar 15 menit hari ini?</div>
       </div>
     </div>
+
+    <div class="section-title">Perjalanan Belajarmu</div>
+    <div class="journey" id="journeyList"></div>
   </div>
 
-  <!-- SUCCESS -->
-  <div class="panel" id="p3">
-    <div class="success">
-      <div class="big">🎉</div>
-      <h1>Hebat!</h1>
-      <div class="desc" style="font-size:16px;">Sesi belajar hari ini selesai.</div>
-      <div class="stats">
-        <div class="stat"><div class="stat-icon">📚</div><span id="statW">0 kata baru</span></div>
-        <div class="stat"><div class="stat-icon">✅</div>3 babak selesai</div>
-        <div class="stat"><div class="stat-icon">🔥</div>Streak: 2 hari!</div>
+  <!-- ========== VIEW: SESSION ========== -->
+  <div class="view" id="viewSession">
+    <!-- Session Header -->
+    <div class="sess-header glass">
+      <button class="back-btn" onclick="showView('viewHome')">← Kembali</button>
+      <div class="sess-title" id="sessTitle">Sesi 1</div>
+      <div class="sess-timer" id="sessTimer">15:00</div>
+    </div>
+    <!-- Step progress -->
+    <div class="step-bar">
+      <div class="step-dot active" id="sd0"></div>
+      <div class="step-dot" id="sd1"></div>
+      <div class="step-dot" id="sd2"></div>
+    </div>
+    <div class="step-labels">
+      <span class="sl active" id="sl0">📖 Membaca</span>
+      <span class="sl" id="sl1">🎧 Mendengar</span>
+      <span class="sl" id="sl2">🗣️ Berbicara</span>
+    </div>
+
+    <!-- STEP 0: Reading -->
+    <div class="panel glass show" id="step0">
+      <h2>📖 Membaca</h2>
+      <p class="hint">Baca teks di bawah. <strong>Klik kata bergaris</strong> untuk lihat artinya.</p>
+      <div class="text-card glass-inner">
+        <div class="lang-label">🇮🇩 Indonesia</div>
+        <div class="id-text" id="readId"></div>
+        <div class="lang-label" style="margin-top:12px;">🇬🇧 English</div>
+        <div id="readEn"></div>
       </div>
+      <div class="saved-section glass-inner">
+        <div class="saved-title">📚 Kata Tersimpan</div>
+        <div class="tags" id="savedTags"><span class="empty-tag">Belum ada — klik kata di atas</span></div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Listening -->
+    <div class="panel glass" id="step1">
+      <h2>🎧 Mendengar</h2>
+      <p class="hint">Dengarkan audio dan ikuti teksnya.</p>
+      <div class="player glass-inner">
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+        <div class="track"><div class="track-fill" id="tFill"></div></div>
+        <span class="time" id="tTime">0:00</span>
+      </div>
+      <div class="sub-btns">
+        <button class="sbtn on" onclick="setSub('both',this)">🇮🇩+🇬🇧</button>
+        <button class="sbtn" onclick="setSub('en',this)">🇬🇧 Saja</button>
+        <button class="sbtn" onclick="setSub('id',this)">🇮🇩 Saja</button>
+        <button class="sbtn" onclick="setSub('off',this)">Sembunyikan</button>
+      </div>
+      <div class="transcript glass-inner">
+        <div class="t-id" id="trId"></div>
+        <div class="t-en" id="trEn"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Speaking -->
+    <div class="panel glass" id="step2">
+      <h2>🗣️ Berbicara</h2>
+      <p class="hint">Deskripsikan gambar ini <strong>dengan suara lantang</strong> dalam bahasa Inggris.</p>
+      <div class="speak-card glass-inner">
+        <div class="emoji" id="speakEmoji"></div>
+        <div class="prompt" id="speakPrompt"></div>
+        <button class="hint-btn" onclick="document.getElementById('hintBox').classList.toggle('show')">💡 Lihat contoh jawaban</button>
+        <div class="hint-box" id="hintBox">
+          <div class="hint-en" id="speakEx"></div>
+          <div class="hint-id" id="speakExId"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Done -->
+    <div class="panel glass" id="step3">
+      <div class="done-screen">
+        <div class="done-icon">✅</div>
+        <h2>Sesi Selesai!</h2>
+        <p class="hint" style="margin-bottom:16px;">Kamu sudah belajar 15 menit hari ini.</p>
+        <div class="done-stat glass-inner"><span>📚</span> <span id="statW">0</span> kata baru dipelajari</div>
+        <div class="done-stat glass-inner"><span>✅</span> 3 babak diselesaikan</div>
+        <button class="nav-btn primary" onclick="finishSession()" style="margin-top:20px;width:100%;">Kembali ke Beranda</button>
+      </div>
+    </div>
+
+    <!-- Nav buttons -->
+    <div class="sess-nav" id="sessNav">
+      <button class="nav-btn secondary" id="btnBack" onclick="prevStep()" style="visibility:hidden">← Kembali</button>
+      <button class="nav-btn primary" id="btnNext" onclick="nextStep()">Lanjut ke Mendengar →</button>
     </div>
   </div>
 
-  <div class="nav-footer" id="navFooter">
-    <button class="nav-btn btn-back" id="btnBack" onclick="prevStep()" style="visibility:hidden;">← Kembali</button>
-    <button class="nav-btn btn-next" id="btnNext" onclick="nextStep()">Lanjut ke Mendengar →</button>
+  <!-- ========== VIEW: DICTIONARY ========== -->
+  <div class="view" id="viewDict">
+    <div class="home-header glass">
+      <div>
+        <div class="greeting">📚 Kamus Pribadi</div>
+        <div class="greeting-sub" id="dictCount">0 kata tersimpan</div>
+      </div>
+    </div>
+    <div class="dict-list" id="dictList">
+      <div class="empty-dict">Belum ada kata tersimpan. Mulai belajar untuk mengisi kamusmu!</div>
+    </div>
   </div>
+
+  <!-- ========== BOTTOM NAV ========== -->
+  <nav class="bottom-nav glass" id="bottomNav">
+    <button class="bnav active" onclick="showView('viewHome',this)">🏠<span>Beranda</span></button>
+    <button class="bnav" onclick="showView('viewDict',this)">📚<span>Kamus</span></button>
+  </nav>
 </div>
 
-<div class="popup" id="popup">
-  <div class="pw" id="pW"></div><div class="pp" id="pP"></div>
-  <div class="pa" id="pA"></div><div class="pc" id="pC"></div>
+<!-- Word popup -->
+<div class="popup glass" id="popup">
+  <div class="pw" id="pW"></div>
+  <div class="pp" id="pP"></div>
+  <div class="pa" id="pA"></div>
+  <div class="pc" id="pC"></div>
 </div>
 
-<script>
-const words=[
-  {en:'Every',pron:'/ˈɛv.ri/',id:'Setiap',ex:'Every day I learn something new.'},
-  {en:'morning',pron:'/ˈmɔːr.nɪŋ/',id:'Pagi hari',ex:'I drink coffee every morning.'},
-  {en:'goes',pron:'/ɡoʊz/',id:'Pergi (dia)',ex:'She goes to school by bus.'},
-  {en:'market',pron:'/ˈmɑːr.kɪt/',id:'Pasar',ex:'The market opens at 6 AM.'},
-  {en:'buy',pron:'/baɪ/',id:'Membeli',ex:'I want to buy some fruit.'},
-  {en:'fresh',pron:'/frɛʃ/',id:'Segar',ex:'Fresh air is good for health.'},
-  {en:'vegetables',pron:'/ˈvɛdʒ.tə.bəlz/',id:'Sayuran',ex:'Eat more vegetables every day.'},
-  {en:'always',pron:'/ˈɔːl.weɪz/',id:'Selalu',ex:'She always smiles at me.'},
-  {en:'chooses',pron:'/ˈtʃuːzɪz/',id:'Memilih',ex:'He always chooses the best.'},
-  {en:'red',pron:'/rɛd/',id:'Merah',ex:'The red apple looks delicious.'},
-  {en:'tomatoes',pron:'/təˈmeɪ.toʊz/',id:'Tomat',ex:'I put tomatoes in the salad.'},
-  {en:'large',pron:'/lɑːrdʒ/',id:'Besar',ex:'We need a large box.'},
-  {en:'carrots',pron:'/ˈkær.əts/',id:'Wortel',ex:'Carrots are good for your eyes.'},
-  {en:'vendors',pron:'/ˈvɛn.dərz/',id:'Pedagang',ex:'The vendors sell fruits cheaply.'},
-  {en:'friendly',pron:'/ˈfrɛnd.li/',id:'Ramah',ex:'She is very friendly.'},
-  {en:'often',pron:'/ˈɔː.fən/',id:'Sering',ex:'I often visit my grandmother.'},
-  {en:'special',pron:'/ˈspɛʃ.əl/',id:'Istimewa',ex:'Today is a special day.'},
-  {en:'price',pron:'/praɪs/',id:'Harga',ex:'What is the price of this?'},
-  {en:'very',pron:'/ˈvɛr.i/',id:'Sangat',ex:'She is very kind.'},
-];
-const sents=[
-  ['Every','morning',',','Sari','goes','to','the','market','to','buy','fresh','vegetables','.'],
-  ['She','always','chooses','red','tomatoes','and','large','carrots','.'],
-  ['The','vendors','there','are','very','friendly','and','often','give','her','a','special','price','.'],
-];
-let cur=0,saved=new Set();
-
-function buildText(){
-  const c=document.getElementById('textEn');c.innerHTML='';
-  sents.forEach((s,si)=>{
-    if(si>0)c.appendChild(document.createTextNode(' '));
-    s.forEach(w=>{
-      const cl=w.replace(/[,.]/g,'');
-      const d=words.find(x=>x.en.toLowerCase()===cl.toLowerCase());
-      if(d&&cl.length>1){
-        const sp=document.createElement('span');sp.className='w';sp.textContent=w+' ';
-        sp.onclick=e=>{e.stopPropagation();sp.classList.add('saved');saved.add(d.en);updateTags();showPop(e,d);};
-        c.appendChild(sp);
-      }else c.appendChild(document.createTextNode(w+' '));
-    });
-  });
-}
-function showPop(e,d){
-  const p=document.getElementById('popup');
-  document.getElementById('pW').textContent=d.en;
-  document.getElementById('pP').textContent=d.pron;
-  document.getElementById('pA').textContent='🇮🇩 '+d.id;
-  document.getElementById('pC').textContent='"'+d.ex+'"';
-  p.style.display='block';
-  let t=e.clientY+14,l=e.clientX;
-  if(l+250>innerWidth)l=innerWidth-260;
-  p.style.top=t+'px';p.style.left=l+'px';
-  setTimeout(()=>p.style.display='none',3500);
-}
-document.addEventListener('click',()=>document.getElementById('popup').style.display='none');
-function updateTags(){
-  const c=document.getElementById('tagList');
-  if(!saved.size){c.innerHTML='<span style="color:var(--muted);font-size:12px;">Belum ada</span>';return;}
-  c.innerHTML=[...saved].map(w=>`<span class="tag">${w}</span>`).join('');
-}
-
-function goStep(n){
-  if(n>3)return;cur=n;
-  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('show',i===n));
-  document.querySelectorAll('.step-dot').forEach((d,i)=>{d.className='step-dot'+(i<n?' done':'')+(i===n?' active':'');});
-  document.querySelectorAll('.step-label').forEach((l,i)=>{l.className='step-label'+(i<n?' done':'')+(i===n?' active':'');});
-  const back=document.getElementById('btnBack'),next=document.getElementById('btnNext'),nav=document.getElementById('navFooter');
-  if(n===3){nav.style.display='none';document.getElementById('statW').textContent=saved.size+' kata baru';return;}
-  nav.style.display='flex';back.style.visibility=n===0?'hidden':'visible';
-  if(n===0){next.textContent='Lanjut ke Mendengar →';next.className='nav-btn btn-next';}
-  else if(n===1){next.textContent='Lanjut ke Berbicara →';next.className='nav-btn btn-next';}
-  else{next.textContent='Selesai Belajar ✓';next.className='nav-btn btn-next btn-done';}
-}
-function nextStep(){goStep(cur+1);}
-function prevStep(){if(cur>0)goStep(cur-1);}
-
-let playing=false,elapsed=0,timer;
-function togglePlay(){
-  playing=!playing;const b=document.getElementById('playBtn');b.textContent=playing?'⏸':'▶';
-  if(playing){timer=setInterval(()=>{elapsed+=.5;if(elapsed>=18){elapsed=0;playing=false;b.textContent='▶';clearInterval(timer);}document.getElementById('tFill').style.width=(elapsed/18*100)+'%';document.getElementById('tTime').textContent='0:'+String(Math.floor(elapsed)).padStart(2,'0');},500);}
-  else clearInterval(timer);
-}
-function setSub(m,btn){
-  document.querySelectorAll('.sub-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  const i=document.getElementById('trId'),e=document.getElementById('trEn');
-  i.style.display=(m==='both'||m==='id')?'':'none';
-  e.style.display=(m==='both'||m==='en')?'':'none';
-}
-buildText();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
