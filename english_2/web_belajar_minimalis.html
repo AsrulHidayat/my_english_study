@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F4F6FB;
+  --white: #FFFFFF;
+  --accent: #E8826A;
+  --accent2: #7B9FE0;
+  --text: #1A1F36;
+  --sub: #8A94A8;
+  --border: #ECEEF5;
+  --soft-red: #FDECEA;
+  --soft-blue: #EAF0FB;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  min-height: 100vh;
+}
+
+.shell {
+  display: flex;
+  height: 100vh;
+  min-height: 580px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 72px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--text);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.logo-icon svg { fill: white; }
+.nav-item {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: var(--sub);
+}
+.nav-item:hover { background: var(--bg); }
+.nav-item.active { background: var(--soft-red); color: var(--accent); }
+.nav-item svg { width: 18px; height: 18px; }
+.nav-label { font-size: 9px; font-weight: 500; letter-spacing: 0.2px; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  width: 240px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.panel-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+
+.doctor-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: var(--white);
+  transition: box-shadow 0.15s;
+  cursor: pointer;
+}
+.doctor-card:hover { box-shadow: 0 4px 16px rgba(26,31,54,0.07); }
+.doctor-card.active { border-color: var(--accent2); background: var(--soft-blue); }
+
+.doc-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.doc-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #fbc2a4, #e8826a);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: white; flex-shrink: 0;
+}
+.doc-avatar.blue { background: linear-gradient(135deg, #a8c4f0, #7b9fe0); }
+.doc-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.doc-loc { font-size: 10px; color: var(--sub); }
+.doc-role { font-size: 14px; font-weight: 600; color: var(--text); }
+.doc-spec { font-size: 11px; color: var(--sub); margin-bottom: 8px; }
+.doc-meta { display: flex; gap: 12px; margin-bottom: 10px; }
+.meta-item label { display: block; font-size: 10px; color: var(--sub); margin-bottom: 1px; }
+.meta-item span { font-size: 12px; font-weight: 500; color: var(--text); }
+.doc-actions { display: flex; align-items: center; gap: 6px; }
+.appt-btn {
+  flex: 1; padding: 6px 10px;
+  background: var(--text); color: white;
+  border: none; border-radius: 8px;
+  font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: opacity 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.appt-btn:hover { opacity: 0.85; }
+.icon-btn {
+  width: 30px; height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 8px; background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.15s;
+  font-size: 13px;
+}
+.icon-btn:hover { background: var(--bg); }
+
+.visa-card {
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent2), #4a72c4);
+  padding: 12px 14px;
+  color: white;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto;
+}
+.visa-num { font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+.visa-name { font-size: 10px; opacity: 0.75; margin-top: 2px; }
+.visa-badge {
+  background: rgba(255,255,255,0.25);
+  padding: 3px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 700;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.right-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.right-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; max-width: 340px; }
+.bell-btn {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 10px; background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px; flex-shrink: 0;
+}
+
+/* SECTION CARD */
+.sec-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.sec-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.sec-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.see-all { font-size: 12px; color: var(--accent2); cursor: pointer; font-weight: 500; }
+
+/* CALENDAR */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 4px;
+}
+.cal-day {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--sub);
+  transition: all 0.15s;
+  font-weight: 400;
+}
+.cal-day:hover { background: var(--bg); color: var(--text); }
+.cal-day.today {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+
+/* EXAMINATIONS */
+.exam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.exam-item { padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: all 0.15s; }
+.exam-item:hover { border-color: var(--accent2); background: var(--soft-blue); }
+.exam-date { font-size: 10px; color: var(--sub); margin-bottom: 3px; }
+.exam-role { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.exam-doc { font-size: 11px; color: var(--sub); }
+
+/* TREATMENT */
+.treat-row { display: flex; gap: 10px; align-items: stretch; }
+.treat-cal {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.treat-month { font-size: 11px; color: var(--sub); margin-bottom: 8px; }
+.treat-days {
+  display: flex; align-items: center; gap: 4px;
+}
+.treat-nav {
+  background: none; border: none; color: var(--sub);
+  font-size: 14px; cursor: pointer; padding: 0 2px;
+  line-height: 1;
+}
+.treat-day {
+  flex: 1; text-align: center;
+  font-size: 11px; color: var(--sub);
+  padding: 5px 2px; border-radius: 8px;
+  cursor: pointer; transition: background 0.15s;
+}
+.treat-day:hover { background: var(--bg); }
+.treat-day .d-num { font-size: 13px; font-weight: 500; color: var(--text); display: block; }
+.treat-appt {
+  width: 130px;
+  background: linear-gradient(135deg, var(--accent), #d4614e);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: white;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.treat-date-box { text-align: center; }
+.treat-date-num { font-size: 22px; font-weight: 700; line-height: 1; }
+.treat-date-mon { font-size: 10px; opacity: 0.8; margin-top: 1px; }
+.treat-info { flex: 1; }
+.treat-name { font-size: 12px; font-weight: 600; }
+.treat-time { font-size: 10px; opacity: 0.8; margin-bottom: 6px; }
+.treat-btns { display: flex; gap: 5px; }
+.treat-btn {
+  width: 26px; height: 26px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; cursor: pointer;
+}
+
+/* SECTION TABS */
+.sec-tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 1px solid var(--border); }
+.sec-tab {
+  padding: 8px 14px; font-size: 12px; font-weight: 500;
+  color: var(--sub); cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.15s; margin-bottom: -1px; background: none; border-top: none; border-left: none; border-right: none;
+  font-family: 'Inter', sans-serif;
+}
+.sec-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+.content-area { display: none; padding-top: 14px; }
+.content-area.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo-icon">
+      <svg viewBox="0 0 20 20" width="18" height="18"><path d="M3 3h6v6H3zm8 0h6v6h-6zM3 11h6v6H3zm8 4a3 3 0 1 0 6 0 3 3 0 0 0-6 0z"/></svg>
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span class="nav-label">Home</span>
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+      <span class="nav-label">Babak</span>
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="nav-label">Kamus</span>
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      <span class="nav-label">Progres</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- LEFT -->
+    <div class="left-panel">
+      <div class="panel-title">Sesi Belajar</div>
+
+      <!-- CARD 1 -->
+      <div class="doctor-card active" onclick="selectCard(this)">
+        <div class="doc-top">
+          <div class="doc-avatar">SR</div>
+          <div>
+            <div class="doc-name">Babak Membaca</div>
+            <div class="doc-loc">Teks bilingual, klik kata</div>
+          </div>
+        </div>
+        <div class="doc-role">Reading</div>
+        <div class="doc-spec">Pemahaman teks</div>
+        <div class="doc-meta">
+          <div class="meta-item"><label>Durasi</label><span>5 menit</span></div>
+          <div class="meta-item"><label>Kata</label><span>~20 kata</span></div>
+        </div>
+        <div class="doc-actions">
+          <button class="appt-btn" onclick="goSection(0)">Mulai</button>
+          <div class="icon-btn">📖</div>
+          <div class="icon-btn">🔖</div>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="doctor-card" onclick="selectCard(this)">
+        <div class="doc-top">
+          <div class="doc-avatar blue">DL</div>
+          <div>
+            <div class="doc-name">Babak Mendengar</div>
+            <div class="doc-loc">Audio + subtitle toggle</div>
+          </div>
+        </div>
+        <div class="doc-role">Listening</div>
+        <div class="doc-spec">Pemahaman audio</div>
+        <div class="doc-meta">
+          <div class="meta-item"><label>Durasi</label><span>5 menit</span></div>
+          <div class="meta-item"><label>Kecepatan</label><span>0.7×</span></div>
+        </div>
+        <div class="doc-actions">
+          <button class="appt-btn" onclick="goSection(1)">Mulai</button>
+          <div class="icon-btn">🎧</div>
+          <div class="icon-btn">🔊</div>
+        </div>
+      </div>
+
+      <!-- VISA-STYLE PROGRESS -->
+      <div class="visa-card">
+        <div>
+          <div class="visa-num">Hari ke-1 dari 30</div>
+          <div class="visa-name">Streak belajarmu</div>
+        </div>
+        <div class="visa-badge">🔥 1</div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-panel">
+      <div class="right-header">
+        <div class="right-title">Pilih babak belajarmu hari ini</div>
+        <div class="bell-btn">🔔</div>
+      </div>
+
+      <!-- CALENDAR / PROGRESS -->
+      <div class="sec-card">
+        <div class="sec-head">
+          <div class="sec-name">Progress Bulan Ini</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <!-- BABAK TABS -->
+      <div class="sec-card" style="padding-bottom:16px">
+        <div class="sec-tabs">
+          <button class="sec-tab active" onclick="setTab(this,'t0')">📖 Membaca</button>
+          <button class="sec-tab" onclick="setTab(this,'t1')">🎧 Mendengar</button>
+          <button class="sec-tab" onclick="setTab(this,'t2')">🗣️ Berbicara</button>
+        </div>
+
+        <!-- TAB 0: READING -->
+        <div class="content-area show" id="t0">
+          <div style="font-size:12px;color:var(--sub);margin-bottom:10px;">Klik kata bergaris untuk tahu artinya</div>
+          <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="font-size:11px;font-weight:600;letter-spacing:0.8px;color:var(--sub);text-transform:uppercase;margin-bottom:6px;">🇮🇩 Indonesia</div>
+            <div style="font-size:12px;color:var(--sub);line-height:1.8;font-style:italic;margin-bottom:12px;">Setiap pagi, Sari pergi ke pasar untuk membeli sayuran segar.</div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:0.8px;color:var(--sub);text-transform:uppercase;margin-bottom:6px;">🇬🇧 English</div>
+            <div style="font-size:13px;color:var(--text);line-height:1.9;" id="textEn"></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="kamusList">
+            <span style="font-size:11px;color:var(--sub);font-style:italic;">Klik kata untuk menyimpan</span>
+          </div>
+        </div>
+
+        <!-- TAB 1: LISTENING -->
+        <div class="content-area" id="t1">
+          <div style="background:var(--bg);border-radius:12px;padding:14px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <button id="playBtn" onclick="togglePlay()" style="width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;color:white;font-size:14px;cursor:pointer;flex-shrink:0;transition:opacity 0.15s;" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">▶</button>
+              <div style="flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;">
+                <div id="progFill" style="height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0%;transition:width 0.5s linear;border-radius:2px;"></div>
+              </div>
+              <span id="timeLabel" style="font-size:11px;color:var(--sub);min-width:28px;text-align:right;">0:00</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <button class="sec-tab active" style="border-radius:99px;border:1px solid var(--border);padding:4px 10px;" onclick="setSpeed(this,'slow')">0.7×</button>
+              <button class="sec-tab" style="border-radius:99px;border:1px solid var(--border);padding:4px 10px;" onclick="setSpeed(this,'med')">Normal</button>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <button class="sec-tab active" id="sB" onclick="setSub('both')" style="border-radius:8px;border:1px solid var(--border);flex:1;">🇮🇩+🇬🇧</button>
+              <button class="sec-tab" id="sI" onclick="setSub('id')" style="border-radius:8px;border:1px solid var(--border);flex:1;">🇮🇩</button>
+              <button class="sec-tab" id="sE" onclick="setSub('en')" style="border-radius:8px;border:1px solid var(--border);flex:1;">🇬🇧</button>
+              <button class="sec-tab" id="sO" onclick="setSub('off')" style="border-radius:8px;border:1px solid var(--border);flex:1;">Mati</button>
+            </div>
+            <div id="sIdBox" style="font-size:12px;color:var(--sub);font-style:italic;padding:8px 10px;background:white;border-radius:8px;margin-bottom:6px;line-height:1.6;">Setiap pagi, Sari pergi ke pasar untuk membeli sayuran segar...</div>
+            <div id="sEnBox" style="font-size:12px;color:var(--text);padding:8px 10px;background:white;border-radius:8px;line-height:1.6;">Every morning, Sari goes to the market to buy fresh vegetables...</div>
+          </div>
+        </div>
+
+        <!-- TAB 2: SPEAKING -->
+        <div class="content-area" id="t2">
+          <div style="background:linear-gradient(135deg,#fdecea,#fdf0ee);border-radius:12px;padding:14px;">
+            <div style="font-size:28px;text-align:center;margin-bottom:10px;letter-spacing:6px;">🥕 🍅 🥬</div>
+            <div style="font-size:12px;color:var(--sub);font-style:italic;padding:8px 10px;background:white;border-radius:8px;border-left:2px solid var(--accent);margin-bottom:10px;line-height:1.6;">💬 Coba ceritakan apa yang ada di gambar. Sayuran apa yang kamu lihat?</div>
+            <button onclick="toggleContoh()" style="font-size:11px;color:var(--accent2);background:white;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;margin-bottom:8px;font-family:'Inter',sans-serif;">👁 Lihat contoh</button>
+            <div id="contohBox" style="display:none;font-size:12px;color:var(--accent);padding:8px 10px;background:white;border-radius:8px;line-height:1.7;margin-bottom:8px;">"I can see red tomatoes, orange carrots, and green lettuce."<br><span style="color:var(--sub);font-size:11px;">"Saya lihat tomat merah, wortel oranye, dan selada hijau."</span></div>
+            <button onclick="selesai()" style="width:100%;padding:10px;background:var(--text);color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;">✓ Sesi selesai</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TREATMENT / SCHEDULE ROW -->
+      <div class="sec-card">
+        <div class="sec-head">
+          <div class="sec-name">Jadwal Minggu Ini</div>
+        </div>
+        <div class="treat-row">
+          <div class="treat-cal">
+            <div class="treat-month">April 2026</div>
+            <div class="treat-days">
+              <button class="treat-nav">‹</button>
+              <div class="treat-day"><span class="d-num">26</span>Sen</div>
+              <div class="treat-day"><span class="d-num">27</span>Sel</div>
+              <div class="treat-day" style="background:var(--soft-red);border-radius:8px;"><span class="d-num" style="color:var(--accent);">28</span><span style="color:var(--accent);">Rab</span></div>
+              <div class="treat-day"><span class="d-num">29</span>Kam</div>
+              <div class="treat-day"><span class="d-num">30</span>Jum</div>
+              <div class="treat-day"><span class="d-num">01</span>Sab</div>
+              <button class="treat-nav">›</button>
+            </div>
+          </div>
+          <div class="treat-appt">
+            <div class="treat-date-box">
+              <div class="treat-date-num">28</div>
+              <div class="treat-date-mon">April</div>
+            </div>
+            <div class="treat-info">
+              <div class="treat-name">Sesi Harian</div>
+              <div class="treat-time">15 menit</div>
+              <div class="treat-btns">
+                <div class="treat-btn">📖</div>
+                <div class="treat-btn">🎧</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div id="popup" style="display:none;position:fixed;z-index:200;background:white;border:1px solid var(--border);border-radius:12px;padding:12px 14px;max-width:200px;box-shadow:0 8px 24px rgba(26,31,54,0.12);pointer-events:none;">
+  <div id="pW" style="font-size:15px;font-weight:600;color:var(--text);"></div>
+  <div id="pP" style="font-size:11px;color:var(--accent2);margin:2px 0 5px;"></div>
+  <div id="pA" style="font-size:13px;color:var(--text);margin-bottom:5px;"></div>
+  <div id="pC" style="font-size:11px;color:var(--sub);font-style:italic;line-height:1.5;"></div>
+</div>
+
+<script>
+// ── CALENDAR ──
+function buildCal() {
+  const g = document.getElementById('calGrid');
+  const done = [1,2,3,4,5,8,9,10,11,14,15,16,17,18,21,22,23,24,25];
+  for (let i = 1; i <= 30; i++) {
+    const d = document.createElement('div');
+    d.className = 'cal-day' + (i === 28 ? ' today' : '');
+    d.textContent = i;
+    if (done.includes(i) && i !== 28) d.style.cssText = 'background:#eaf0fb;color:#7b9fe0;font-weight:500;border-radius:50%;';
+    g.appendChild(d);
+  }
+}
+
+// ── WORDS ──
+const words = [
+  {en:'Every',pron:'/ˈɛv.ri/',id:'Setiap',contoh:'Every day I learn something new.'},
+  {en:'morning',pron:'/ˈmɔːr.nɪŋ/',id:'Pagi hari',contoh:'I drink coffee every morning.'},
+  {en:'goes',pron:'/ɡoʊz/',id:'Pergi (dia)',contoh:'She goes to school by bus.'},
+  {en:'market',pron:'/ˈmɑːr.kɪt/',id:'Pasar',contoh:'The market opens at 6 AM.'},
+  {en:'buy',pron:'/baɪ/',id:'Membeli',contoh:'I want to buy some fruit.'},
+  {en:'fresh',pron:'/frɛʃ/',id:'Segar',contoh:'Fresh air is good for health.'},
+  {en:'vegetables',pron:'/ˈvɛdʒ.tə.bəlz/',id:'Sayuran',contoh:'Eat more vegetables every day.'},
+  {en:'always',pron:'/ˈɔːl.weɪz/',id:'Selalu',contoh:'She always smiles at me.'},
+  {en:'chooses',pron:'/ˈtʃuːzɪz/',id:'Memilih (dia)',contoh:'He always chooses the best.'},
+  {en:'red',pron:'/rɛd/',id:'Merah',contoh:'The red apple looks delicious.'},
+  {en:'tomatoes',pron:'/təˈmeɪ.toʊz/',id:'Tomat',contoh:'I put tomatoes in the salad.'},
+  {en:'large',pron:'/lɑːrdʒ/',id:'Besar',contoh:'We need a large box.'},
+  {en:'carrots',pron:'/ˈkær.əts/',id:'Wortel',contoh:'Carrots are good for your eyes.'},
+  {en:'vendors',pron:'/ˈvɛn.dərz/',id:'Para pedagang',contoh:'The vendors sell fruits cheaply.'},
+  {en:'friendly',pron:'/ˈfrɛnd.li/',id:'Ramah',contoh:'She is very friendly to everyone.'},
+  {en:'often',pron:'/ˈɔː.fən/',id:'Sering',contoh:'I often visit my grandmother.'},
+  {en:'special',pron:'/ˈspɛʃ.əl/',id:'Istimewa',contoh:'Today is a special day for me.'},
+  {en:'price',pron:'/praɪs/',id:'Harga',contoh:'What is the price of this shirt?'},
+  {en:'very',pron:'/ˈvɛr.i/',id:'Sangat',contoh:'She is very kind.'},
+];
+const sents = [
+  ['Every','morning',',','Sari','goes','to','the','market','to','buy','fresh','vegetables','.'],
+  ['She','always','chooses','red','tomatoes','and','large','carrots','.'],
+  ['The','vendors','there','are','very','friendly','and','often','give','her','a','special','price','.'],
+];
+let saved = [];
+function buildText() {
+  const c = document.getElementById('textEn'); c.innerHTML = '';
+  sents.forEach((s,si) => {
+    if (si>0) c.appendChild(document.createTextNode(' '));
+    s.forEach(w => {
+      const cl = w.replace(/[,.]/g,'');
+      const d = words.find(x => x.en.toLowerCase()===cl.toLowerCase());
+      if (d && cl.length>1) {
+        const sp = document.createElement('span');
+        sp.style.cssText = 'cursor:pointer;border-bottom:1px dashed var(--accent2);padding:0 1px;border-radius:2px;transition:background 0.15s;';
+        sp.textContent = w+' ';
+        sp.onmouseover = ()=>sp.style.background='var(--soft-blue)';
+        sp.onmouseout = ()=>{ if(!sp.dataset.saved) sp.style.background=''; };
+        sp.onclick = e => showPop(e,d,sp);
+        c.appendChild(sp);
+      } else c.appendChild(document.createTextNode(w+' '));
+    });
+  });
+}
+function showPop(e,d,el) {
+  el.style.background='var(--soft-blue)'; el.dataset.saved='1';
+  const p=document.getElementById('popup');
+  document.getElementById('pW').textContent=d.en;
+  document.getElementById('pP').textContent=d.pron;
+  document.getElementById('pA').textContent='🇮🇩 '+d.id;
+  document.getElementById('pC').textContent='"'+d.contoh+'"';
+  p.style.display='block';
+  let top=e.clientY+12, left=e.clientX;
+  if(left+210>window.innerWidth) left=window.innerWidth-218;
+  p.style.top=top+'px'; p.style.left=left+'px';
+  if(!saved.includes(d.en)){saved.push(d.en);updateKamus();}
+  setTimeout(()=>p.style.display='none',3000);
+}
+document.addEventListener('click',e=>{ if(!e.target.dataset||!e.target.dataset.saved) document.getElementById('popup').style.display='none'; });
+function updateKamus(){
+  const l=document.getElementById('kamusList');
+  if(!saved.length){l.innerHTML='<span style="font-size:11px;color:var(--sub);font-style:italic;">Klik kata untuk menyimpan</span>';return;}
+  l.innerHTML=saved.map(w=>`<span style="font-size:11px;padding:3px 10px;border-radius:99px;background:var(--soft-blue);color:var(--accent2);border:1px solid var(--border);cursor:pointer;">${w}</span>`).join('');
+}
+
+// ── AUDIO ──
+let playing=false,elapsed=0,total=18,pInt;
+function togglePlay(){
+  playing=!playing;
+  const b=document.getElementById('playBtn');
+  b.textContent=playing?'⏸':'▶';
+  b.style.background=playing?'var(--accent2)':'var(--accent)';
+  if(playing){pInt=setInterval(()=>{elapsed+=0.5;if(elapsed>=total){elapsed=0;playing=false;b.textContent='▶';b.style.background='var(--accent)';clearInterval(pInt);document.getElementById('progFill').style.width='0%';document.getElementById('timeLabel').textContent='0:00';return;}document.getElementById('progFill').style.width=(elapsed/total*100)+'%';document.getElementById('timeLabel').textContent='0:'+String(Math.floor(elapsed)).padStart(2,'0');},500);}
+  else{clearInterval(pInt);}
+}
+function setSpeed(el){document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+function setSub(m){
+  ['B','I','E','O'].forEach(x=>document.getElementById('s'+x).classList.remove('active'));
+  const iB=document.getElementById('sIdBox'),eB=document.getElementById('sEnBox');
+  if(m==='both'){document.getElementById('sB').classList.add('active');iB.style.display='';eB.style.display='';}
+  else if(m==='id'){document.getElementById('sI').classList.add('active');iB.style.display='';eB.style.display='none';}
+  else if(m==='en'){document.getElementById('sE').classList.add('active');iB.style.display='none';eB.style.display='';}
+  else{document.getElementById('sO').classList.add('active');iB.style.display='none';eB.style.display='none';}
+}
+
+// ── SPEAKING ──
+function toggleContoh(){const b=document.getElementById('contohBox');b.style.display=b.style.display==='none'?'block':'none';}
+function selesai(){alert('✓ Sesi hari ini selesai!\n\nKata disimpan: '+saved.length+'\n3 babak berhasil diselesaikan! 🎉');}
+
+// ── TABS ──
+function setTab(el,id){
+  document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.content-area').forEach(c=>c.classList.remove('show'));
+  document.getElementById(id).classList.add('show');
+}
+
+// ── NAV ──
+function setNav(el){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
+function selectCard(el){document.querySelectorAll('.doctor-card').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+function goSection(i){
+  const tabs=['t0','t1','t2'];
+  document.querySelectorAll('.sec-tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  document.querySelectorAll('.content-area').forEach((c,idx)=>c.classList.toggle('show',idx===i));
+}
+
+buildCal();
+buildText();
+</script>
+</body>
+</html>
